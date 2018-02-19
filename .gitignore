@@ -1,0 +1,6 @@
+_cache/
+brigade-bitbucket-gateway/rootfs/brigade-bitbucket-gateway
+bin/
+node_modules/
+tests/testdata/*-generated.*
+vendor/

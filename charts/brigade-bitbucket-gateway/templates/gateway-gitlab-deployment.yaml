@@ -1,0 +1,47 @@
+{{ $fullname := include "brigade.bitbucket.fullname" . }}
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: {{ $fullname }}
+  labels:
+    app: {{ template "brigade.fullname" . }}
+    chart: "{{ .Chart.Name }}-{{ .Chart.Version }}"
+    release: "{{ .Release.Name }}"
+    heritage: "{{ .Release.Service }}"
+    role: gateway
+    type: bitbucket
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: {{ template "brigade.fullname" . }}
+        role: gateway
+        type: bitbucket
+    spec:
+      serviceAccountName: {{ $fullname }}
+      containers:
+      - name: {{ .Chart.Name }}
+        image: "{{ .Values.bitbucket.registry }}/{{ .Values.bitbucket.name }}:{{ default .Chart.AppVersion .Values.bitbucket.tag }}"
+        imagePullPolicy: {{ default "IfNotPresent" .Values.bitbucket.pullPolicy }}
+        ports:
+        - containerPort: {{ .Values.bitbucket.service.internalPort }}
+        livenessProbe:
+          tcpSocket:
+            port: {{ .Values.bitbucket.service.internalPort }}
+          initialDelaySeconds: 5
+          periodSeconds: 10
+        readinessProbe:
+          tcpSocket:
+            port: {{ .Values.bitbucket.service.internalPort }}
+          initialDelaySeconds: 5
+          periodSeconds: 10
+        env:
+          - name: BRIGADE_NAMESPACE
+            valueFrom:
+              fieldRef:
+                fieldPath: metadata.namespace
+          - name: BRIGADE_bitbucket_GATEWAY_PORT
+            value: {{ .Values.bitbucket.service.internalPort | quote }}
+      {{ if .Values.privateRegistry }}imagePullSecrets:
+        - name: {{.Values.privateRegistry}}{{ end }}

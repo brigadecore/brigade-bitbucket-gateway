@@ -1,0 +1,46 @@
+# This is the main configuration file for the Brigade chart.
+# To override values here, specify them in your own YAML file, and override
+# during install or upgrade:
+#
+#    $ helm install -n brigade -f myValues.yaml brigade/brigade
+#
+# By default, the chart will install without RBAC. To install with
+# RBAC, set `rbac.enabled` to `true`.
+#
+# To disable the GitHub gateway, set `gw.enabled` to `false`. This will mean
+# that no GitHub hooks will work, though scripts will still be able to mount
+# GitHub projects based on the Project configuration.
+#
+
+# If enabled, roles, role bindings will be turned on.
+# IMPORTANT: The RBAC system is complex, and if you are using RBACs in your
+# cluster, you may need to evaluate existing rules and accounts in addition
+# to the rules created here. We recommend that you understand RBACs
+# before enabling this.
+rbac:
+  enabled: false
+
+# bitbucket is the bitbucket gateway.
+bitbucket:
+  enabled: true
+  registry: lukepatrick
+  name: brigade-bitbucket-gateway
+  #tag:
+  #pullPolicy: IfNotPresent
+  service:
+    name: brigade-bitbucket-service
+    type: LoadBalancer
+    externalPort: 7748
+    internalPort: 7748
+
+# By default, this is off. If you enable it, you might want to change the
+# service.type to ClusterIP
+ingress:
+  enabled: false
+  hosts: []
+  # Add TLS configuration
+  # tls: <TLS_CONFIG>
+  # Add custom annotations
+  # annotations:
+  #   name: value
+
