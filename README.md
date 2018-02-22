@@ -1,4 +1,4 @@
-# Brigade bitbucket Gateway
+# Brigade Bitbucket Gateway
 
 Send [Bitbucket events](https://confluence.atlassian.com/bitbucket/manage-webhooks-735643732.html) into a [Brigade](https://github.com/Azure/brigade) pipeline. 
 
@@ -21,15 +21,15 @@ $ cd brigade-bitbucket-gateway
 Helm install brigade-bitbucket-gateway
 > note name and namespace (something important about brigade core)
 ```bash
-$ helm install --name brigade-bb ./charts/brigade-bitbucket-gateway
+$ helm install --name bb-gw ./charts/brigade-bitbucket-gateway
 ```
 
 ### From Repo
 Add this project as a helm repo
 
 ```bash
-$ helm repo add glgw https://lukepatrick.github.io/brigade-bitbucket-gateway
-$ helm install -n brig-bb glgw/brigade-bitbucket-gateway
+$ helm repo add bb-gw https://lukepatrick.github.io/brigade-bitbucket-gateway
+$ helm install -n bb-gw bb-gw/brigade-bitbucket-gateway
 ```
 
 ## Building from Source

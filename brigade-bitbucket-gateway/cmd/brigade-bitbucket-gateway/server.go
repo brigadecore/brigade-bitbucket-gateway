@@ -82,7 +82,7 @@ func defaultGatewayPort() string {
 
 // HandleMultiple handles multiple bitbucket events
 func HandleMultiple(payload interface{}, header webhooks.Header) {
-	log.Println("Handling Payload..")
+	log.Println("HandleMultiple Payload..")
 
 	clientset, err := kube.GetClient(master, kubeconfig)
 	if err != nil {
@@ -92,7 +92,7 @@ func HandleMultiple(payload interface{}, header webhooks.Header) {
 	store := kube.New(clientset, namespace)
 	store.GetProjects()
 
-	glhandler := whbitbucket.NewBitbucketHandler(store)
+	bbhandler := whbitbucket.NewBitbucketHandler(store)
 
 	var repo, commit, secret string
 	secret = strings.Join(header["X-Hook-UUID"], "")
@@ -105,7 +105,7 @@ func HandleMultiple(payload interface{}, header webhooks.Header) {
 		repo = release.Repository.FullName
 		commit = release.Push.Changes[0].Commits[0].Hash
 
-		glhandler.HandleEvent(repo, "push", commit, []byte(fmt.Sprintf("%v", release)), secret)
+		bbhandler.HandleEvent(repo, "push", commit, []byte(fmt.Sprintf("%v", release)), secret)
 
 	default:
 		log.Printf("Unsupported event")
