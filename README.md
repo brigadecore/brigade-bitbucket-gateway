@@ -45,8 +45,24 @@ To build a Docker image
 $ make docker-build
 ```
 
+## BitBucket Integration
+The Default URL for the BitBucket Gateway is at `:7448/events/bitbucket/`. In your BitBucket project, go to Settings -> Webhooks. Depending on how you set up 
+your Kubernetes and the BitBucket Gateway will determine your externally accessable host/IP/Port. Out of the box the gateway sets up as LoadBalancer; use the host/Cluster IP and check the BitBucket Gateway Kubernetes Service for the external port (something like 30001).
+
+Enter that IP/Port and URL at the Webhook URL. 
+
+Rather than generating a Shared Secret like GitHub/GitLab, you must extract the `X-Hook-UUID` from the BitBucket Webhook created. Store this value as the Brigade Project *values.yaml* `sharedSecret` property.
+
+Check the boxes for the Trigger events to publish from the BitBucket instance. SSL is optional.
+
 ## [Scripting Guide](docs/scripting.md)
-tl;dr: Bitbucket Gateway produces x events: `push`.
+tl;dr: Bitbucket Gateway produces 6 events:
+`push`,
+`repo:fork`,
+`repo:updated`,
+`repo:commit_comment_created`,
+`repo:commit_status_created`,
+`repo:commit_status_updated`
 
 
 # Contributing

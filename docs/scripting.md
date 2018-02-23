@@ -20,10 +20,15 @@ events.on("push", () => {
 })
 ```
 
-The Bitbucket Gateway produces X events:
+The Bitbucket Gateway produces 6 events:
 
 ```
 push
+repo:fork
+repo:updated
+repo:commit_comment_created
+repo:commit_status_created
+repo:commit_status_updated
 
 ```
 
