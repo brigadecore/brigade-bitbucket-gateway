@@ -95,7 +95,7 @@ func HandleMultiple(payload interface{}, header webhooks.Header) {
 	bbhandler := whbitbucket.NewBitbucketHandler(store)
 
 	var repo, commit, secret string
-	secret = strings.Join(header["X-Hook-UUID"], "")
+	secret = strings.Join(header["X-Hook-Uuid"], "")
 
 	switch payload.(type) {
 	case bitbucket.RepoPushPayload:
