@@ -107,6 +107,59 @@ func HandleMultiple(payload interface{}, header webhooks.Header) {
 
 		bbhandler.HandleEvent(repo, "push", commit, []byte(fmt.Sprintf("%v", release)), secret)
 
+	case bitbucket.RepoForkPayload:
+		log.Println("case bitbucket.RepoForkPayload")
+		release := payload.(bitbucket.RepoForkPayload)
+
+		repo = release.Repository.FullName
+		commit = "master"
+
+		bbhandler.HandleEvent(repo, "repo:fork", commit, []byte(fmt.Sprintf("%v", release)), secret)
+
+	case bitbucket.RepoUpdatedPayload:
+		log.Println("case bitbucket.RepoUpdatedPayload")
+		release := payload.(bitbucket.RepoUpdatedPayload)
+
+		repo = release.Repository.FullName
+		commit = "master"
+
+		bbhandler.HandleEvent(repo, "repo:updated", commit, []byte(fmt.Sprintf("%v", release)), secret)
+
+	case bitbucket.RepoCommitCommentCreatedPayload:
+		log.Println("case bitbucket.RepoCommitCommentCreatedPayload")
+		release := payload.(bitbucket.RepoCommitCommentCreatedPayload)
+
+		repo = release.Repository.FullName
+		commit = release.Commit.Hash
+
+		bbhandler.HandleEvent(repo, "repo:commit_comment_created", commit, []byte(fmt.Sprintf("%v", release)), secret)
+
+	case bitbucket.RepoCommitStatusCreatedPayload:
+		log.Println("case bitbucket.RepoCommitStatusCreatedPayload")
+		release := payload.(bitbucket.RepoCommitStatusCreatedPayload)
+
+		repo = release.Repository.FullName
+
+		url := fmt.Sprintf("%v", release.CommitStatus.Links.Commit)
+		urls := strings.Split(url, "/")
+
+		commit = urls[len(urls)-1]
+
+		bbhandler.HandleEvent(repo, "repo:commit_status_created", commit, []byte(fmt.Sprintf("%v", release)), secret)
+
+	case bitbucket.RepoCommitStatusUpdatedPayload:
+		log.Println("case bitbucket.RepoCommitStatusUpdatedPayload")
+		release := payload.(bitbucket.RepoCommitStatusUpdatedPayload)
+
+		repo = release.Repository.FullName
+
+		url := fmt.Sprintf("%v", release.CommitStatus.Links.Commit)
+		urls := strings.Split(url, "/")
+
+		commit = urls[len(urls)-1]
+
+		bbhandler.HandleEvent(repo, "repo:commit_status_updated", commit, []byte(fmt.Sprintf("%v", release)), secret)
+
 	default:
 		log.Printf("Unsupported event")
 		return
