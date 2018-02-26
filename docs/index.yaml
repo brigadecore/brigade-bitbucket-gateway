@@ -1,14 +1,14 @@
 apiVersion: v1
 entries:
-  brigade-gitlab-gateway:
+  brigade-bitbucket-gateway:
   - apiVersion: v1
     appVersion: v0.1.0
-    created: 2018-02-15T14:30:11.987514-07:00
-    description: Brigade GitLab Gateway provides events from GitLab to the Brigade
+    created: 2018-02-25T18:28:22.390679-07:00
+    description: Brigade Bitbucket Gateway provides events from Bitbucket to the Brigade
       pipeline
-    digest: 6a848a9ebfd11ec9cb463a32c57ace558ce900bae367550feef2ad75b027e8ac
-    name: brigade-gitlab-gateway
+    digest: 4620dd53109f55080920f3f03dc69bc40aedb1650de1d1b235dbf7c80df3f0ac
+    name: brigade-bitbucket-gateway
     urls:
-    - brigade-gitlab-gateway-0.1.0.tgz
+    - brigade-bitbucket-gateway-0.1.0.tgz
     version: 0.1.0
-generated: 2018-02-15T14:30:11.986973-07:00
+generated: 2018-02-25T18:28:22.39007-07:00
