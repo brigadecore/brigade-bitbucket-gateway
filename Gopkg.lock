@@ -8,8 +8,8 @@
     "pkg/storage",
     "pkg/storage/kube"
   ]
-  revision = "2f3eeb41eec7365b8f2b85dfff02f7d84da54bf3"
-  version = "v0.9.0"
+  revision = "6913b2703df943fed7a135b671f3efdafd92dbf3"
+  version = "v0.10.0"
 
 [[projects]]
   name = "github.com/PuerkitoBio/purell"
@@ -382,6 +382,6 @@
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
-  inputs-digest = "8721e5037ff62ac4d82b43f48c55437b257bd2a4de6df6c82cef84be90fd127c"
+  inputs-digest = "7fc89a68d9689c45f43a6b6c935249201984d11dacce3f88aaed5bf9e1aef110"
   solver-name = "gps-cdcl"
   solver-version = 1

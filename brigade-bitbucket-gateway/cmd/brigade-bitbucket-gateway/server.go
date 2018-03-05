@@ -11,8 +11,8 @@ import (
 
 	"k8s.io/api/core/v1"
 
+	"github.com/Azure/brigade/pkg/brigade"
 	"github.com/Azure/brigade/pkg/storage/kube"
-
 	"gopkg.in/go-playground/webhooks.v3"
 	"gopkg.in/go-playground/webhooks.v3/bitbucket"
 )
@@ -94,7 +94,8 @@ func HandleMultiple(payload interface{}, header webhooks.Header) {
 
 	bbhandler := whbitbucket.NewBitbucketHandler(store)
 
-	var repo, commit, secret string
+	var repo, secret string
+	var rev brigade.Revision
 	secret = strings.Join(header["X-Hook-Uuid"], "")
 
 	switch payload.(type) {
@@ -103,36 +104,36 @@ func HandleMultiple(payload interface{}, header webhooks.Header) {
 		release := payload.(bitbucket.RepoPushPayload)
 
 		repo = release.Repository.FullName
-		commit = release.Push.Changes[0].Commits[0].Hash
+		rev.Commit = release.Push.Changes[0].Commits[0].Hash
 
-		bbhandler.HandleEvent(repo, "push", commit, []byte(fmt.Sprintf("%v", release)), secret)
+		bbhandler.HandleEvent(repo, "push", rev, []byte(fmt.Sprintf("%v", release)), secret)
 
 	case bitbucket.RepoForkPayload:
 		log.Println("case bitbucket.RepoForkPayload")
 		release := payload.(bitbucket.RepoForkPayload)
 
 		repo = release.Repository.FullName
-		commit = "master"
+		rev.Ref = "master"
 
-		bbhandler.HandleEvent(repo, "repo:fork", commit, []byte(fmt.Sprintf("%v", release)), secret)
+		bbhandler.HandleEvent(repo, "repo:fork", rev, []byte(fmt.Sprintf("%v", release)), secret)
 
 	case bitbucket.RepoUpdatedPayload:
 		log.Println("case bitbucket.RepoUpdatedPayload")
 		release := payload.(bitbucket.RepoUpdatedPayload)
 
 		repo = release.Repository.FullName
-		commit = "master"
+		rev.Ref = "master"
 
-		bbhandler.HandleEvent(repo, "repo:updated", commit, []byte(fmt.Sprintf("%v", release)), secret)
+		bbhandler.HandleEvent(repo, "repo:updated", rev, []byte(fmt.Sprintf("%v", release)), secret)
 
 	case bitbucket.RepoCommitCommentCreatedPayload:
 		log.Println("case bitbucket.RepoCommitCommentCreatedPayload")
 		release := payload.(bitbucket.RepoCommitCommentCreatedPayload)
 
 		repo = release.Repository.FullName
-		commit = release.Commit.Hash
+		rev.Commit = release.Commit.Hash
 
-		bbhandler.HandleEvent(repo, "repo:commit_comment_created", commit, []byte(fmt.Sprintf("%v", release)), secret)
+		bbhandler.HandleEvent(repo, "repo:commit_comment_created", rev, []byte(fmt.Sprintf("%v", release)), secret)
 
 	case bitbucket.RepoCommitStatusCreatedPayload:
 		log.Println("case bitbucket.RepoCommitStatusCreatedPayload")
@@ -143,9 +144,9 @@ func HandleMultiple(payload interface{}, header webhooks.Header) {
 		url := fmt.Sprintf("%v", release.CommitStatus.Links.Commit)
 		urls := strings.Split(url, "/")
 
-		commit = urls[len(urls)-1]
+		rev.Commit = urls[len(urls)-1]
 
-		bbhandler.HandleEvent(repo, "repo:commit_status_created", commit, []byte(fmt.Sprintf("%v", release)), secret)
+		bbhandler.HandleEvent(repo, "repo:commit_status_created", rev, []byte(fmt.Sprintf("%v", release)), secret)
 
 	case bitbucket.RepoCommitStatusUpdatedPayload:
 		log.Println("case bitbucket.RepoCommitStatusUpdatedPayload")
@@ -156,9 +157,9 @@ func HandleMultiple(payload interface{}, header webhooks.Header) {
 		url := fmt.Sprintf("%v", release.CommitStatus.Links.Commit)
 		urls := strings.Split(url, "/")
 
-		commit = urls[len(urls)-1]
+		rev.Commit = urls[len(urls)-1]
 
-		bbhandler.HandleEvent(repo, "repo:commit_status_updated", commit, []byte(fmt.Sprintf("%v", release)), secret)
+		bbhandler.HandleEvent(repo, "repo:commit_status_updated", rev, []byte(fmt.Sprintf("%v", release)), secret)
 
 	default:
 		log.Printf("Unsupported event")
