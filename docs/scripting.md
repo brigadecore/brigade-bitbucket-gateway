@@ -20,7 +20,7 @@ events.on("push", () => {
 })
 ```
 
-The Bitbucket Gateway produces 6 events:
+The Bitbucket Gateway produces 18 events:
 
 ```
 push
