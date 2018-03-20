@@ -161,6 +161,114 @@ func HandleMultiple(payload interface{}, header webhooks.Header) {
 
 		bbhandler.HandleEvent(repo, "repo:commit_status_updated", rev, []byte(fmt.Sprintf("%v", release)), secret)
 
+	case bitbucket.IssueCreatedPayload:
+		log.Println("case bitbucket.IssueCreatedPayload")
+		release := payload.(bitbucket.IssueCreatedPayload)
+
+		repo = release.Repository.FullName
+		rev.Ref = "master"
+
+		bbhandler.HandleEvent(repo, "issue:created", rev, []byte(fmt.Sprintf("%v", release)), secret)
+
+	case bitbucket.IssueUpdatedPayload:
+		log.Println("case bitbucket.IssueUpdatedPayload")
+		release := payload.(bitbucket.IssueUpdatedPayload)
+
+		repo = release.Repository.FullName
+		rev.Ref = "master"
+
+		bbhandler.HandleEvent(repo, "issue:updated", rev, []byte(fmt.Sprintf("%v", release)), secret)
+
+	case bitbucket.IssueCommentCreatedPayload:
+		log.Println("case bitbucket.IssueCommentCreatedPayload")
+		release := payload.(bitbucket.IssueCommentCreatedPayload)
+
+		repo = release.Repository.FullName
+		rev.Ref = "master"
+
+		bbhandler.HandleEvent(repo, "issue:comment_created", rev, []byte(fmt.Sprintf("%v", release)), secret)
+
+	case bitbucket.PullRequestCreatedPayload:
+		log.Println("case bitbucket.PullRequestCreatedPayload")
+		release := payload.(bitbucket.PullRequestCreatedPayload)
+
+		repo = release.Repository.FullName
+		rev.Ref = "master"
+
+		bbhandler.HandleEvent(repo, "pullrequest:created", rev, []byte(fmt.Sprintf("%v", release)), secret)
+
+	case bitbucket.PullRequestUpdatedPayload:
+		log.Println("case bitbucket.PullRequestUpdatedPayload")
+		release := payload.(bitbucket.PullRequestUpdatedPayload)
+
+		repo = release.Repository.FullName
+		rev.Ref = "master"
+
+		bbhandler.HandleEvent(repo, "pullrequest:updated", rev, []byte(fmt.Sprintf("%v", release)), secret)
+
+	case bitbucket.PullRequestApprovedPayload:
+		log.Println("case bitbucket.PullRequestApprovedPayload")
+		release := payload.(bitbucket.PullRequestApprovedPayload)
+
+		repo = release.Repository.FullName
+		rev.Ref = "master"
+
+		bbhandler.HandleEvent(repo, "pullrequest:approved", rev, []byte(fmt.Sprintf("%v", release)), secret)
+
+	case bitbucket.PullRequestUnapprovedPayload:
+		log.Println("case bitbucket.PullRequestUnapprovedPayload")
+		release := payload.(bitbucket.PullRequestUnapprovedPayload)
+
+		repo = release.Repository.FullName
+		rev.Ref = "master"
+
+		bbhandler.HandleEvent(repo, "pullrequest:unapproved", rev, []byte(fmt.Sprintf("%v", release)), secret)
+
+	case bitbucket.PullRequestMergedPayload:
+		log.Println("case bitbucket.PullRequestMergedPayload")
+		release := payload.(bitbucket.PullRequestMergedPayload)
+
+		repo = release.Repository.FullName
+		rev.Ref = "master"
+
+		bbhandler.HandleEvent(repo, "pullrequest:fulfilled", rev, []byte(fmt.Sprintf("%v", release)), secret)
+
+	case bitbucket.PullRequestDeclinedPayload:
+		log.Println("case bitbucket.PullRequestDeclinedPayload")
+		release := payload.(bitbucket.PullRequestDeclinedPayload)
+
+		repo = release.Repository.FullName
+		rev.Ref = "master"
+
+		bbhandler.HandleEvent(repo, "pullrequest:rejected", rev, []byte(fmt.Sprintf("%v", release)), secret)
+
+	case bitbucket.PullRequestCommentCreatedPayload:
+		log.Println("case bitbucket.PullRequestCommentCreatedPayload")
+		release := payload.(bitbucket.PullRequestCommentCreatedPayload)
+
+		repo = release.Repository.FullName
+		rev.Ref = "master"
+
+		bbhandler.HandleEvent(repo, "pullrequest:comment_created", rev, []byte(fmt.Sprintf("%v", release)), secret)
+
+	case bitbucket.PullRequestCommentUpdatedPayload:
+		log.Println("case bitbucket.PullRequestCommentUpdatedPayload")
+		release := payload.(bitbucket.PullRequestCommentUpdatedPayload)
+
+		repo = release.Repository.FullName
+		rev.Ref = "master"
+
+		bbhandler.HandleEvent(repo, "pullrequest:comment_updated", rev, []byte(fmt.Sprintf("%v", release)), secret)
+
+	case bitbucket.PullRequestCommentDeletedPayload:
+		log.Println("case bitbucket.PullRequestCommentDeletedPayload")
+		release := payload.(bitbucket.PullRequestCommentDeletedPayload)
+
+		repo = release.Repository.FullName
+		rev.Ref = "master"
+
+		bbhandler.HandleEvent(repo, "pullrequest:comment_deleted", rev, []byte(fmt.Sprintf("%v", release)), secret)
+
 	default:
 		log.Printf("Unsupported event")
 		return
