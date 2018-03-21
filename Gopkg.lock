@@ -8,8 +8,8 @@
     "pkg/storage",
     "pkg/storage/kube"
   ]
-  revision = "6913b2703df943fed7a135b671f3efdafd92dbf3"
-  version = "v0.10.0"
+  revision = "69ddd4520e2d2964d7cd4709f4bd441214339c9f"
+  version = "v0.12.0"
 
 [[projects]]
   name = "github.com/PuerkitoBio/purell"
@@ -234,9 +234,9 @@
     ".",
     "bitbucket"
   ]
-  revision = "c271ec3e322dab2e93990e8c5287fe5d5d1209ba"
+  revision = "f2acbcde401467ded7701fbbf7eabd7a0bb6702d"
   source = "https://github.com/go-playground/webhooks/tree/v3"
-  version = "v3.8.0"
+  version = "v3.10.0"
 
 [[projects]]
   name = "gopkg.in/inf.v0"
@@ -382,6 +382,6 @@
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
-  inputs-digest = "7fc89a68d9689c45f43a6b6c935249201984d11dacce3f88aaed5bf9e1aef110"
+  inputs-digest = "4790cb0f641b1fcaa78af25ed15e870fda1b274e8d036ed89393b9e50c54a995"
   solver-name = "gps-cdcl"
   solver-version = 1

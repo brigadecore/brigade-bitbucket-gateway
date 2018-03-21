@@ -49,7 +49,7 @@ $ make docker-build
 
 | BitBucket Gateway | Brigade Core |
 |-------------------|--------------|
-| v0.10.0           | v0.10.0+     |
+| v0.10.0+          | v0.10.0+     |
 | v0.1.0            | v0.9.0-      |
 
 
