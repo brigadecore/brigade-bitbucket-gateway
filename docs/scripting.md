@@ -20,12 +20,10 @@ events.on("push", () => {
 })
 ```
 
-The Bitbucket Gateway produces 18 events:
+The Bitbucket Gateway produces 16 events:
 
 ```
 push
-repo:fork
-repo:updated
 repo:commit_comment_created
 repo:commit_status_created
 repo:commit_status_updated
@@ -40,7 +38,9 @@ pullrequest:fulfilled
 pullrequest:rejected
 pullrequest:comment_created
 pullrequest:comment_updated
-pull_request:comment_deleted
+pullrequest:comment_deleted
 ```
+
+and two not supported: `repo:fork`, `repo:updated` as these are currently considered no-ops. The Pull Request events are questionable to support, please open an issue if you have any use-case issues.
 
 These are based on the events described in the [Bitbucket Webhooks API](https://confluence.atlassian.com/bitbucket/manage-webhooks-735643732.html) guide.

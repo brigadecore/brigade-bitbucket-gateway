@@ -64,10 +64,8 @@ Rather than supplying a Shared Secret like GitHub/GitLab, **you must extract the
 Check the boxes for the Trigger events to publish from the BitBucket instance. SSL is optional.
 
 ## [Scripting Guide](docs/scripting.md)
-tl;dr: Bitbucket Gateway produces 18 events:
+tl;dr: Bitbucket Gateway produces 16 events:
 `push`,
-`repo:fork`,
-`repo:updated`,
 `repo:commit_comment_created`,
 `repo:commit_status_created`,
 `repo:commit_status_updated`,
@@ -83,6 +81,8 @@ tl;dr: Bitbucket Gateway produces 18 events:
 `pullrequest:comment_created`,
 `pullrequest:comment_updated`,
 `pullrequest:comment_deleted`
+
+and two not supported: `repo:fork`, `repo:updated`
 
 
 # Contributing
