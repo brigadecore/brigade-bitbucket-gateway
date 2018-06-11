@@ -1,6 +1,7 @@
 package main
 
 import (
+	"encoding/json"
 	"flag"
 	"fmt"
 	"log"
@@ -107,7 +108,7 @@ func HandleMultiple(payload interface{}, header webhooks.Header) {
 		rev.Commit = release.Push.Changes[0].New.Target.Hash
 		rev.Ref = release.Push.Changes[0].New.Name
 
-		bbhandler.HandleEvent(repo, "push", rev, []byte(fmt.Sprintf("%v", release)), secret)
+		bbhandler.HandleEvent(repo, "push", rev, getJSON(release), secret)
 
 	case bitbucket.RepoForkPayload:
 		log.Println("case bitbucket.RepoForkPayload")
@@ -116,7 +117,7 @@ func HandleMultiple(payload interface{}, header webhooks.Header) {
 		//release := payload.(bitbucket.RepoForkPayload)
 		//repo = release.Repository.FullName
 		//rev.Ref = "master"
-		//bbhandler.HandleEvent(repo, "repo:fork", rev, []byte(fmt.Sprintf("%v", release)), secret)
+		//bbhandler.HandleEvent(repo, "repo:fork", rev, getJSON(release), secret)
 
 	case bitbucket.RepoUpdatedPayload:
 		log.Println("case bitbucket.RepoUpdatedPayload")
@@ -127,7 +128,7 @@ func HandleMultiple(payload interface{}, header webhooks.Header) {
 		// repo = release.Repository.FullName
 		// rev.Ref = "master"
 
-		// bbhandler.HandleEvent(repo, "repo:updated", rev, []byte(fmt.Sprintf("%v", release)), secret)
+		// bbhandler.HandleEvent(repo, "repo:updated", rev, getJSON(release), secret)
 
 	case bitbucket.RepoCommitCommentCreatedPayload:
 		log.Println("case bitbucket.RepoCommitCommentCreatedPayload")
@@ -137,7 +138,7 @@ func HandleMultiple(payload interface{}, header webhooks.Header) {
 		rev.Commit = release.Commit.Hash
 		rev.Ref = ""
 
-		bbhandler.HandleEvent(repo, "repo:commit_comment_created", rev, []byte(fmt.Sprintf("%v", release)), secret)
+		bbhandler.HandleEvent(repo, "repo:commit_comment_created", rev, getJSON(release), secret)
 
 	case bitbucket.RepoCommitStatusCreatedPayload:
 		log.Println("case bitbucket.RepoCommitStatusCreatedPayload")
@@ -151,7 +152,7 @@ func HandleMultiple(payload interface{}, header webhooks.Header) {
 		rev.Commit = urls[len(urls)-1]
 		rev.Ref = ""
 
-		bbhandler.HandleEvent(repo, "repo:commit_status_created", rev, []byte(fmt.Sprintf("%v", release)), secret)
+		bbhandler.HandleEvent(repo, "repo:commit_status_created", rev, getJSON(release), secret)
 
 	case bitbucket.RepoCommitStatusUpdatedPayload:
 		log.Println("case bitbucket.RepoCommitStatusUpdatedPayload")
@@ -165,7 +166,7 @@ func HandleMultiple(payload interface{}, header webhooks.Header) {
 		rev.Commit = urls[len(urls)-1]
 		rev.Ref = ""
 
-		bbhandler.HandleEvent(repo, "repo:commit_status_updated", rev, []byte(fmt.Sprintf("%v", release)), secret)
+		bbhandler.HandleEvent(repo, "repo:commit_status_updated", rev, getJSON(release), secret)
 
 	case bitbucket.IssueCreatedPayload:
 		log.Println("case bitbucket.IssueCreatedPayload")
@@ -175,7 +176,7 @@ func HandleMultiple(payload interface{}, header webhooks.Header) {
 		rev.Ref = "master"
 		rev.Commit = ""
 
-		bbhandler.HandleEvent(repo, "issue:created", rev, []byte(fmt.Sprintf("%v", release)), secret)
+		bbhandler.HandleEvent(repo, "issue:created", rev, getJSON(release), secret)
 
 	case bitbucket.IssueUpdatedPayload:
 		log.Println("case bitbucket.IssueUpdatedPayload")
@@ -185,7 +186,7 @@ func HandleMultiple(payload interface{}, header webhooks.Header) {
 		rev.Ref = "master"
 		rev.Commit = ""
 
-		bbhandler.HandleEvent(repo, "issue:updated", rev, []byte(fmt.Sprintf("%v", release)), secret)
+		bbhandler.HandleEvent(repo, "issue:updated", rev, getJSON(release), secret)
 
 	case bitbucket.IssueCommentCreatedPayload:
 		log.Println("case bitbucket.IssueCommentCreatedPayload")
@@ -195,7 +196,7 @@ func HandleMultiple(payload interface{}, header webhooks.Header) {
 		rev.Ref = "master"
 		rev.Commit = ""
 
-		bbhandler.HandleEvent(repo, "issue:comment_created", rev, []byte(fmt.Sprintf("%v", release)), secret)
+		bbhandler.HandleEvent(repo, "issue:comment_created", rev, getJSON(release), secret)
 
 	case bitbucket.PullRequestCreatedPayload:
 		log.Println("case bitbucket.PullRequestCreatedPayload")
@@ -205,7 +206,7 @@ func HandleMultiple(payload interface{}, header webhooks.Header) {
 		rev.Ref = release.PullRequest.Destination.Branch.Name
 		rev.Commit = release.PullRequest.Destination.Commit.Hash
 
-		bbhandler.HandleEvent(repo, "pullrequest:created", rev, []byte(fmt.Sprintf("%v", release)), secret)
+		bbhandler.HandleEvent(repo, "pullrequest:created", rev, getJSON(release), secret)
 
 	case bitbucket.PullRequestUpdatedPayload:
 		log.Println("case bitbucket.PullRequestUpdatedPayload")
@@ -215,7 +216,7 @@ func HandleMultiple(payload interface{}, header webhooks.Header) {
 		rev.Ref = release.PullRequest.Destination.Branch.Name
 		rev.Commit = release.PullRequest.Destination.Commit.Hash
 
-		bbhandler.HandleEvent(repo, "pullrequest:updated", rev, []byte(fmt.Sprintf("%v", release)), secret)
+		bbhandler.HandleEvent(repo, "pullrequest:updated", rev, getJSON(release), secret)
 
 	case bitbucket.PullRequestApprovedPayload:
 		log.Println("case bitbucket.PullRequestApprovedPayload")
@@ -225,7 +226,7 @@ func HandleMultiple(payload interface{}, header webhooks.Header) {
 		rev.Ref = release.PullRequest.Destination.Branch.Name
 		rev.Commit = release.PullRequest.Destination.Commit.Hash
 
-		bbhandler.HandleEvent(repo, "pullrequest:approved", rev, []byte(fmt.Sprintf("%v", release)), secret)
+		bbhandler.HandleEvent(repo, "pullrequest:approved", rev, getJSON(release), secret)
 
 	case bitbucket.PullRequestUnapprovedPayload:
 		log.Println("case bitbucket.PullRequestUnapprovedPayload")
@@ -235,7 +236,7 @@ func HandleMultiple(payload interface{}, header webhooks.Header) {
 		rev.Ref = release.PullRequest.Destination.Branch.Name
 		rev.Commit = release.PullRequest.Destination.Commit.Hash
 
-		bbhandler.HandleEvent(repo, "pullrequest:unapproved", rev, []byte(fmt.Sprintf("%v", release)), secret)
+		bbhandler.HandleEvent(repo, "pullrequest:unapproved", rev, getJSON(release), secret)
 
 	case bitbucket.PullRequestMergedPayload:
 		log.Println("case bitbucket.PullRequestMergedPayload")
@@ -245,7 +246,7 @@ func HandleMultiple(payload interface{}, header webhooks.Header) {
 		rev.Ref = release.PullRequest.Destination.Branch.Name
 		rev.Commit = release.PullRequest.MergeCommit.Hash
 
-		bbhandler.HandleEvent(repo, "pullrequest:fulfilled", rev, []byte(fmt.Sprintf("%v", release)), secret)
+		bbhandler.HandleEvent(repo, "pullrequest:fulfilled", rev, getJSON(release), secret)
 
 	case bitbucket.PullRequestDeclinedPayload:
 		log.Println("case bitbucket.PullRequestDeclinedPayload")
@@ -255,7 +256,7 @@ func HandleMultiple(payload interface{}, header webhooks.Header) {
 		rev.Ref = release.PullRequest.Destination.Branch.Name
 		rev.Commit = release.PullRequest.Destination.Commit.Hash
 
-		bbhandler.HandleEvent(repo, "pullrequest:rejected", rev, []byte(fmt.Sprintf("%v", release)), secret)
+		bbhandler.HandleEvent(repo, "pullrequest:rejected", rev, getJSON(release), secret)
 
 	case bitbucket.PullRequestCommentCreatedPayload:
 		log.Println("case bitbucket.PullRequestCommentCreatedPayload")
@@ -265,7 +266,7 @@ func HandleMultiple(payload interface{}, header webhooks.Header) {
 		rev.Ref = release.PullRequest.Destination.Branch.Name
 		rev.Commit = release.PullRequest.Destination.Commit.Hash
 
-		bbhandler.HandleEvent(repo, "pullrequest:comment_created", rev, []byte(fmt.Sprintf("%v", release)), secret)
+		bbhandler.HandleEvent(repo, "pullrequest:comment_created", rev, getJSON(release), secret)
 
 	case bitbucket.PullRequestCommentUpdatedPayload:
 		log.Println("case bitbucket.PullRequestCommentUpdatedPayload")
@@ -275,7 +276,7 @@ func HandleMultiple(payload interface{}, header webhooks.Header) {
 		rev.Ref = release.PullRequest.Destination.Branch.Name
 		rev.Commit = release.PullRequest.Destination.Commit.Hash
 
-		bbhandler.HandleEvent(repo, "pullrequest:comment_updated", rev, []byte(fmt.Sprintf("%v", release)), secret)
+		bbhandler.HandleEvent(repo, "pullrequest:comment_updated", rev, getJSON(release), secret)
 
 	case bitbucket.PullRequestCommentDeletedPayload:
 		log.Println("case bitbucket.PullRequestCommentDeletedPayload")
@@ -285,11 +286,20 @@ func HandleMultiple(payload interface{}, header webhooks.Header) {
 		rev.Ref = release.PullRequest.Destination.Branch.Name
 		rev.Commit = release.PullRequest.Destination.Commit.Hash
 
-		bbhandler.HandleEvent(repo, "pullrequest:comment_deleted", rev, []byte(fmt.Sprintf("%v", release)), secret)
+		bbhandler.HandleEvent(repo, "pullrequest:comment_deleted", rev, getJSON(release), secret)
 
 	default:
 		log.Printf("Unsupported event")
 		return
 	}
 
+}
+
+func getJSON(release interface{}) []byte {
+	p, err := json.Marshal(release)
+
+	if err != nil {
+		log.Fatal(err)
+	}
+	return []byte(p)
 }
