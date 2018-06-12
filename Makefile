@@ -55,7 +55,6 @@ format:
 	test -z "$$(find . -path ./vendor -prune -type f -o -name '*.go' -exec gofmt -d {} + | tee /dev/stderr)" || \
 	test -z "$$(find . -path ./vendor -prune -type f -o -name '*.go' -exec gofmt -w {} + | tee /dev/stderr)"
 
-HAS_GOMETALINTER := $(shell command -v gometalinter;)
 HAS_DEP          := $(shell command -v dep;)
 HAS_GIT          := $(shell command -v git;)
 
@@ -63,10 +62,6 @@ HAS_GIT          := $(shell command -v git;)
 bootstrap:
 ifndef HAS_GIT
 	$(error You must install git)
-endif
-ifndef HAS_GOMETALINTER
-	go get -u github.com/alecthomas/gometalinter
-	gometalinter --install
 endif
 ifndef HAS_DEP
 	go get -u github.com/golang/dep/cmd/dep

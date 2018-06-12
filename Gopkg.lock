@@ -5,11 +5,13 @@
   name = "github.com/Azure/brigade"
   packages = [
     "pkg/brigade",
+    "pkg/merge",
     "pkg/storage",
-    "pkg/storage/kube"
+    "pkg/storage/kube",
+    "pkg/storage/kube/apicache"
   ]
-  revision = "83c0a43f9cc3e8da15e2a2f8ed774c496e75f574"
-  version = "v0.13.1"
+  revision = "11621e514532e0b89de5dec00d0cda258ca36ab4"
+  version = "v0.14.0"
 
 [[projects]]
   name = "github.com/PuerkitoBio/purell"
@@ -119,6 +121,15 @@
 
 [[projects]]
   branch = "master"
+  name = "github.com/hashicorp/golang-lru"
+  packages = [
+    ".",
+    "simplelru"
+  ]
+  revision = "0fb14efe8c47ae851c0034ed7a448854d3d34cf3"
+
+[[projects]]
+  branch = "master"
   name = "github.com/howeyc/gopass"
   packages = ["."]
   revision = "bf9dde6d0d2c004a008c27aaee91170c786f6db8"
@@ -191,6 +202,7 @@
 [[projects]]
   name = "golang.org/x/net"
   packages = [
+    "context",
     "http2",
     "http2/hpack",
     "idna",
@@ -234,9 +246,9 @@
     ".",
     "bitbucket"
   ]
-  revision = "5580947e3ec83427ef5f6f2392eddca8dde5d99a"
+  revision = "be944ed461fc75c52f0f149acfa011f8da721f6c"
   source = "https://github.com/go-playground/webhooks/tree/v3"
-  version = "v3.11.0"
+  version = "v3.12.0"
 
 [[projects]]
   name = "gopkg.in/inf.v0"
@@ -288,6 +300,7 @@
     "pkg/api/errors",
     "pkg/api/meta",
     "pkg/api/resource",
+    "pkg/apis/meta/internalversion",
     "pkg/apis/meta/v1",
     "pkg/apis/meta/v1/unstructured",
     "pkg/apis/meta/v1alpha1",
@@ -306,6 +319,7 @@
     "pkg/runtime/serializer/versioning",
     "pkg/selection",
     "pkg/types",
+    "pkg/util/cache",
     "pkg/util/clock",
     "pkg/util/diff",
     "pkg/util/errors",
@@ -359,11 +373,13 @@
     "rest",
     "rest/watch",
     "tools/auth",
+    "tools/cache",
     "tools/clientcmd",
     "tools/clientcmd/api",
     "tools/clientcmd/api/latest",
     "tools/clientcmd/api/v1",
     "tools/metrics",
+    "tools/pager",
     "tools/reference",
     "transport",
     "util/cert",
@@ -382,6 +398,6 @@
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
-  inputs-digest = "93e0ea6f2078082de74c159e3d325245d8189f04a773769d5283219772670f73"
+  inputs-digest = "e4e588b5119349c1436b2648799f0090431ea805455c8aab9363b6dd398e4387"
   solver-name = "gps-cdcl"
   solver-version = 1
