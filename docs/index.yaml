@@ -2,8 +2,18 @@ apiVersion: v1
 entries:
   brigade-bitbucket-gateway:
   - apiVersion: v1
+    appVersion: v0.13.0
+    created: 2018-06-12T10:34:17.236276001-06:00
+    description: Brigade Bitbucket Gateway provides events from Bitbucket to the Brigade
+      pipeline
+    digest: f8e8280ca6959e45238e47bb3e6605a3a27fe7311b14dfbd4b9e34ddd34e5bf4
+    name: brigade-bitbucket-gateway
+    urls:
+    - brigade-bitbucket-gateway-0.13.0.tgz
+    version: 0.13.0
+  - apiVersion: v1
     appVersion: v0.12.0
-    created: 2018-06-11T14:24:20.443132805-06:00
+    created: 2018-06-12T10:34:17.236012609-06:00
     description: Brigade Bitbucket Gateway provides events from Bitbucket to the Brigade
       pipeline
     digest: 5365ee96e6df043e55ad5aeae78e08bdcb55cd961afd78afe87d48fe7f536c76
@@ -13,7 +23,7 @@ entries:
     version: 0.12.0
   - apiVersion: v1
     appVersion: v0.11.0
-    created: 2018-06-11T14:24:20.442869406-06:00
+    created: 2018-06-12T10:34:17.235776108-06:00
     description: Brigade Bitbucket Gateway provides events from Bitbucket to the Brigade
       pipeline
     digest: 9087f0b7f84a85cdf45904c0de3e7d8f78c0b3a2f040331276428e5fb9a6c836
@@ -23,7 +33,7 @@ entries:
     version: 0.11.0
   - apiVersion: v1
     appVersion: v0.10.0
-    created: 2018-06-11T14:24:20.442146153-06:00
+    created: 2018-06-12T10:34:17.235537131-06:00
     description: Brigade Bitbucket Gateway provides events from Bitbucket to the Brigade
       pipeline
     digest: 968f890f60dbcacdb6b99cc850ef19833add55c9be1175f2fcc6b343a862d521
@@ -33,7 +43,7 @@ entries:
     version: 0.10.0
   - apiVersion: v1
     appVersion: v0.1.0
-    created: 2018-06-11T14:24:20.441617396-06:00
+    created: 2018-06-12T10:34:17.235284806-06:00
     description: Brigade Bitbucket Gateway provides events from Bitbucket to the Brigade
       pipeline
     digest: 4620dd53109f55080920f3f03dc69bc40aedb1650de1d1b235dbf7c80df3f0ac
@@ -41,4 +51,4 @@ entries:
     urls:
     - brigade-bitbucket-gateway-0.1.0.tgz
     version: 0.1.0
-generated: 2018-06-11T14:24:20.440516994-06:00
+generated: 2018-06-12T10:34:17.234766936-06:00
