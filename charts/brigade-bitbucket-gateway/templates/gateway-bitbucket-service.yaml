@@ -10,6 +10,9 @@ metadata:
     type: bitbucket
 spec:
   type: {{ .Values.bitbucket.service.type }}
+  {{- if .Values.bitbucket.service.loadBalancerIP }}
+  loadBalancerIP: {{ .Values.bitbucket.service.loadBalancerIP }}
+  {{- end }}
   ports:
   - port: {{ .Values.bitbucket.service.externalPort }}
     targetPort: {{ .Values.bitbucket.service.internalPort }}
