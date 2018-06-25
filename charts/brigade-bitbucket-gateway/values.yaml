@@ -30,6 +30,7 @@ bitbucket:
   service:
     name: brigade-bitbucket-service
     type: LoadBalancer
+    loadBalancerIP: ""
     externalPort: 7748
     internalPort: 7748
 
