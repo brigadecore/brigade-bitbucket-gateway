@@ -8,12 +8,12 @@ import (
 	"os"
 	"strings"
 
-	whbitbucket "github.com/lukepatrick/brigade-bitbucket-gateway/pkg/webhook"
+	whbitbucket "github.com/brigadecore/brigade-bitbucket-gateway/pkg/webhook"
 
 	"k8s.io/api/core/v1"
 
-	"github.com/Azure/brigade/pkg/brigade"
-	"github.com/Azure/brigade/pkg/storage/kube"
+	"github.com/brigadecore/brigade/pkg/brigade"
+	"github.com/brigadecore/brigade/pkg/storage/kube"
 	"gopkg.in/go-playground/webhooks.v3"
 	"gopkg.in/go-playground/webhooks.v3/bitbucket"
 )

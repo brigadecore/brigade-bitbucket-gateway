@@ -1,6 +1,6 @@
 # Brigade Bitbucket Gateway
 
-Send [Bitbucket events](https://confluence.atlassian.com/bitbucket/manage-webhooks-735643732.html) into a [Brigade](https://github.com/Azure/brigade) pipeline. 
+Send [Bitbucket events](https://confluence.atlassian.com/bitbucket/manage-webhooks-735643732.html) into a [Brigade](https://github.com/brigadecore/brigade) pipeline. 
 
 This is a Brigade gateway that listens to bitbucket webhooks event stream and triggers events inside of Brigade.
 
@@ -8,14 +8,14 @@ This is a Brigade gateway that listens to bitbucket webhooks event stream and tr
 
 1. Have a running [Kubernetes](https://kubernetes.io/docs/setup/) environment
 2. Setup [Helm](https://github.com/kubernetes/helm)
-3. Setup [Brigade](https://github.com/Azure/brigade) core
+3. Setup [Brigade](https://github.com/brigadecore/brigade) core
 
 ## Install
 
 ### From File
 Clone Brigade Bitbucket Gateway and change directory
 ```bash
-$ git clone https://github.com/lukepatrick/brigade-bitbucket-gateway
+$ git clone https://github.com/brigadecore/brigade-bitbucket-gateway
 $ cd brigade-bitbucket-gateway
 ```
 Helm install brigade-bitbucket-gateway
@@ -28,13 +28,13 @@ $ helm install --name bb-gw ./charts/brigade-bitbucket-gateway
 Add this project as a helm repo
 
 ```bash
-$ helm repo add bb-gw https://lukepatrick.github.io/brigade-bitbucket-gateway
+$ helm repo add bb-gw https://brigadecore.github.io/brigade-bitbucket-gateway
 $ helm install -n bb-gw bb-gw/brigade-bitbucket-gateway
 ```
 
 ## Building from Source
 You must have the Go toolchain, make, and dep installed. For Docker support, you will need to have Docker installed as well. 
-See more at [Brigade Developers Guide](https://github.com/Azure/brigade/blob/master/docs/topics/developers.md) 
+See more at [Brigade Developers Guide](https://github.com/brigadecore/brigade/blob/master/docs/topics/developers.md) 
 From there:
 
 ```bash
