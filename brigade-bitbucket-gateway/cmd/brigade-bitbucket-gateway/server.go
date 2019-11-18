@@ -8,7 +8,7 @@ import (
 	"os"
 	"strings"
 
-	whbitbucket "github.com/lukepatrick/brigade-bitbucket-gateway/pkg/webhook"
+	whbitbucket "github.com/brigadecore/brigade-bitbucket-gateway/pkg/webhook"
 
 	"k8s.io/api/core/v1"
 

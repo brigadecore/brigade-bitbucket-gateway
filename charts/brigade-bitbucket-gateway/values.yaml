@@ -23,7 +23,7 @@ rbac:
 # bitbucket is the bitbucket gateway.
 bitbucket:
   enabled: true
-  registry: lukepatrick
+  registry: brigadecore
   name: brigade-bitbucket-gateway
   #tag:
   #pullPolicy: IfNotPresent

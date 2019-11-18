@@ -15,7 +15,7 @@ This is a Brigade gateway that listens to bitbucket webhooks event stream and tr
 ### From File
 Clone Brigade Bitbucket Gateway and change directory
 ```bash
-$ git clone https://github.com/lukepatrick/brigade-bitbucket-gateway
+$ git clone https://github.com/brigadecore/brigade-bitbucket-gateway
 $ cd brigade-bitbucket-gateway
 ```
 Helm install brigade-bitbucket-gateway
@@ -28,7 +28,7 @@ $ helm install --name bb-gw ./charts/brigade-bitbucket-gateway
 Add this project as a helm repo
 
 ```bash
-$ helm repo add bb-gw https://lukepatrick.github.io/brigade-bitbucket-gateway
+$ helm repo add bb-gw https://brigadecore.github.io/brigade-bitbucket-gateway
 $ helm install -n bb-gw bb-gw/brigade-bitbucket-gateway
 ```
 

@@ -1,6 +1,6 @@
 # Brigade Bitbucket Gateway Documentation
 
-[Home](https://github.com/lukepatrick/brigade-bitbucket-gateway/blob/master/README.md)
+[Home](https://github.com/brigadecore/brigade-bitbucket-gateway/blob/master/README.md)
 
 Send [Bitbucket events](https://confluence.atlassian.com/bitbucket/manage-webhooks-735643732.html) into a [Brigade](https://github.com/brigadecore/brigade) pipeline. 
 
