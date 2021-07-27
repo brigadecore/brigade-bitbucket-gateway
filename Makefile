@@ -1,69 +1,201 @@
-# The Docker registry where images are pushed.
-# Note that if you use an org (like on Quay and DockerHub), you should
-# include that: quay.io/foo
-DOCKER_REGISTRY    ?= brigadecore
-DOCKER_BUILD_FLAGS :=
-LDFLAGS            :=
+SHELL ?= /bin/bash
 
-BINS        = brigade-bitbucket-gateway
-IMAGES      = brigade-bitbucket-gateway
-DOCKER_BINS = brigade-bitbucket-gateway
+.DEFAULT_GOAL := build
 
-GIT_TAG   = $(shell git describe --tags --always 2>/dev/null)
-VERSION   ?= ${GIT_TAG}
-IMAGE_TAG ?= ${VERSION}
-LDFLAGS   += -X github.com/brigadecore/brigade-bitbucket-gateway/pkg/version.Version=$(VERSION)
+################################################################################
+# Version details                                                              #
+################################################################################
 
-# Build native binaries
+# This will reliably return the short SHA1 of HEAD or, if the working directory
+# is dirty, will return that + "-dirty"
+GIT_VERSION = $(shell git describe --always --abbrev=7 --dirty --match=NeVeRmAtCh)
+
+################################################################################
+# Containerized development environment-- or lack thereof                      #
+################################################################################
+
+ifneq ($(SKIP_DOCKER),true)
+	PROJECT_ROOT := $(dir $(realpath $(firstword $(MAKEFILE_LIST))))
+	GO_DEV_IMAGE := brigadecore/go-tools:v0.1.0
+
+	GO_DOCKER_CMD := docker run \
+		-it \
+		--rm \
+		-e SKIP_DOCKER=true \
+		-e GITHUB_TOKEN=$${GITHUB_TOKEN} \
+		-e GOCACHE=/workspaces/brigade-bitbucket-gateway/.gocache \
+		-v $(PROJECT_ROOT):/workspaces/brigade-bitbucket-gateway \
+		-w /workspaces/brigade-bitbucket-gateway \
+		$(GO_DEV_IMAGE)
+
+	KANIKO_IMAGE := brigadecore/kaniko:v0.2.0
+
+	KANIKO_DOCKER_CMD := docker run \
+		-it \
+		--rm \
+		-e SKIP_DOCKER=true \
+		-e DOCKER_PASSWORD=$${DOCKER_PASSWORD} \
+		-v $(PROJECT_ROOT):/workspaces/brigade-bitbucket-gateway \
+		-w /workspaces/brigade-bitbucket-gateway \
+		$(KANIKO_IMAGE)
+
+	HELM_IMAGE := brigadecore/helm-tools:v0.1.0
+
+	HELM_DOCKER_CMD := docker run \
+	  -it \
+		--rm \
+		-e SKIP_DOCKER=true \
+		-e HELM_PASSWORD=$${HELM_PASSWORD} \
+		-v $(PROJECT_ROOT):/workspaces/brigade-bitbucket-gateway \
+		-w /workspaces/brigade-bitbucket-gateway \
+		$(HELM_IMAGE)
+endif
+
+################################################################################
+# Binaries and Docker images we build and publish                              #
+################################################################################
+
+ifdef DOCKER_REGISTRY
+	DOCKER_REGISTRY := $(DOCKER_REGISTRY)/
+endif
+
+ifdef DOCKER_ORG
+	DOCKER_ORG := $(DOCKER_ORG)/
+endif
+
+DOCKER_IMAGE_NAME := $(DOCKER_REGISTRY)$(DOCKER_ORG)brigade-bitbucket-gateway
+
+ifdef HELM_REGISTRY
+	HELM_REGISTRY := $(HELM_REGISTRY)/
+endif
+
+ifdef HELM_ORG
+	HELM_ORG := $(HELM_ORG)/
+endif
+
+HELM_CHART_NAME := $(HELM_REGISTRY)$(HELM_ORG)brigade-bitbucket-gateway
+
+ifdef VERSION
+	MUTABLE_DOCKER_TAG := latest
+else
+	VERSION            := $(GIT_VERSION)
+	MUTABLE_DOCKER_TAG := edge
+endif
+
+IMMUTABLE_DOCKER_TAG := $(VERSION)
+
+################################################################################
+# Tests                                                                        #
+################################################################################
+
+.PHONY: lint
+lint:
+	$(GO_DOCKER_CMD) sh -c ' \
+		golangci-lint run --config golangci.yaml \
+	'
+
+.PHONY: test-unit
+test-unit:
+	$(GO_DOCKER_CMD) sh -c ' \
+		go test \
+			-v \
+			-timeout=60s \
+			-race \
+			-coverprofile=coverage.txt \
+			-covermode=atomic \
+			./... \
+	'
+
+.PHONY: lint-chart
+lint-chart:
+	$(HELM_DOCKER_CMD) sh -c ' \
+		cd charts/brigade-bitbucket-gateway && \
+		helm dep up && \
+		helm lint . \
+	'
+
+################################################################################
+# Build                                                                        #
+################################################################################
+
 .PHONY: build
-build: $(BINS)
+build:
+	$(KANIKO_DOCKER_CMD) kaniko \
+		--build-arg VERSION=$(VERSION) \
+		--build-arg COMMIT=$(GIT_VERSION) \
+		--dockerfile /workspaces/brigade-bitbucket-gateway/Dockerfile \
+		--context dir:///workspaces/brigade-bitbucket-gateway/ \
+		--no-push
 
-.PHONY: $(BINS)
-$(BINS):
-	go build -ldflags '$(LDFLAGS)' -o bin/$@ ./$@/cmd/$@
+################################################################################
+# Publish                                                                      #
+################################################################################
 
-# Cross-compile for Docker+Linux
-build-docker-bins: $(addsuffix -docker-bin,$(DOCKER_BINS))
+.PHONY: publish
+publish: push publish-chart
 
-%-docker-bin:
-	GOOS=linux GOARCH=amd64 CGO_ENABLED=0 go build -ldflags '$(LDFLAGS)' -o ./$*/rootfs/$* ./$*/cmd/$*
+.PHONY: push
+push:
+	$(KANIKO_DOCKER_CMD) sh -c ' \
+		docker login $(DOCKER_REGISTRY) -u $(DOCKER_USERNAME) -p $${DOCKER_PASSWORD} && \
+		kaniko \
+			--build-arg VERSION="$(VERSION)" \
+			--build-arg COMMIT="$(GIT_VERSION)" \
+			--dockerfile /workspaces/bitbucket-gateway/Dockerfile \
+			--context dir:///workspaces/bitbucket-gateway/ \
+			--destination $(DOCKER_IMAGE_NAME):$(IMMUTABLE_DOCKER_TAG) \
+			--destination $(DOCKER_IMAGE_NAME):$(MUTABLE_DOCKER_TAG) \
+	'
 
-# To use docker-build, you need to have Docker installed and configured. You should also set
-# DOCKER_REGISTRY to your own personal registry if you are not pushing to the official upstream.
-.PHONY: docker-build
-docker-build: build-docker-bins
-docker-build: $(addsuffix -image,$(IMAGES))
+.PHONY: publish-chart
+publish-chart:
+	$(HELM_DOCKER_CMD) sh	-c ' \
+		helm registry login $(HELM_REGISTRY) -u $(HELM_USERNAME) -p $${HELM_PASSWORD} && \
+		cd charts/brigade-bitbucket-gateway && \
+		helm dep up && \
+		sed -i "s/^version:.*/version: $(VERSION)/" Chart.yaml && \
+		sed -i "s/^appVersion:.*/appVersion: $(VERSION)/" Chart.yaml && \
+		helm chart save . $(HELM_CHART_NAME):$(VERSION) && \
+		helm chart push $(HELM_CHART_NAME):$(VERSION) \
+	'
 
-%-image:
-	docker build $(DOCKER_BUILD_FLAGS) -t $(DOCKER_REGISTRY)/$*:$(IMAGE_TAG) $*
+################################################################################
+# Targets to facilitate hacking on Brigade Bitbucket Gateway.                  #
+################################################################################
 
-# You must be logged into DOCKER_REGISTRY before you can push.
-.PHONY: docker-push
-docker-push: $(addsuffix -push,$(IMAGES))
+.PHONY: hack-build
+hack-build:
+	docker build \
+		-f Dockerfile \
+		-t $(DOCKER_IMAGE_NAME):$(VERSION) \
+		--build-arg VERSION='$(VERSION)' \
+		--build-arg COMMIT='$(GIT_VERSION)' \
+		.
 
-%-push:
-	docker push $(DOCKER_REGISTRY)/$*:$(IMAGE_TAG)
+.PHONY: hack-push
+hack-push: hack-build
+	docker push $(DOCKER_IMAGE_NAME):$(IMMUTABLE_DOCKER_TAG)
 
-.PRECIOUS: build-chart
-.PHONY: build-chart
-build-chart:
-	helm package -d docs/ ./charts/brigade-bitbucket-gateway
-	helm repo index docs/
+IMAGE_PULL_POLICY ?= Always
 
-.PHONY: format
-format:
-	test -z "$$(find . -path ./vendor -prune -type f -o -name '*.go' -exec gofmt -d {} + | tee /dev/stderr)" || \
-	test -z "$$(find . -path ./vendor -prune -type f -o -name '*.go' -exec gofmt -w {} + | tee /dev/stderr)"
+.PHONY: hack-deploy
+hack-deploy:
+	helm dep up charts/brigade-bitbucket-gateway && \
+	helm upgrade brigade-bitbucket-gateway charts/brigade-bitbucket-gateway \
+		--install \
+		--create-namespace \
+		--namespace brigade-bitbucket-gateway \
+		--timeout 60s \
+		--set image.repository=$(DOCKER_IMAGE_NAME) \
+		--set image.tag=$(IMMUTABLE_DOCKER_TAG) \
+		--set image.pullPolicy=$(IMAGE_PULL_POLICY)
 
-HAS_DEP          := $(shell command -v dep;)
-HAS_GIT          := $(shell command -v git;)
+.PHONY: hack
+hack: hack-push hack-deploy
 
-.PHONY: bootstrap
-bootstrap:
-ifndef HAS_GIT
-	$(error You must install git)
-endif
-ifndef HAS_DEP
-	go get -u github.com/golang/dep/cmd/dep
-endif
-	dep ensure
+# Convenience target for loading image into a KinD cluster
+.PHONY: hack-load-image
+hack-load-image:
+	@echo "Loading $(DOCKER_IMAGE_NAME):$(IMMUTABLE_DOCKER_TAG)"
+	@kind load docker-image $(DOCKER_IMAGE_NAME):$(IMMUTABLE_DOCKER_TAG) \
+			|| echo >&2 "kind not installed or error loading image: $(DOCKER_IMAGE_NAME):$(IMMUTABLE_DOCKER_TAG)"

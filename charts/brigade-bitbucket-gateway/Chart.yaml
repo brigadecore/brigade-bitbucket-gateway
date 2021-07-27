@@ -1,6 +1,12 @@
-apiVersion: v1
-description: Brigade Bitbucket Gateway provides events from Bitbucket to the Brigade pipeline
+apiVersion: v2
 name: brigade-bitbucket-gateway
-version: 0.13.0
-# Note that we use appVersion to get images, so make sure this is correct.
-appVersion: v0.13.0
+description: |
+  The Brigade Bitbucket Gateway
+type: application
+version: 0.1.0
+appVersion: v0.1.0
+sources:
+- https://github.com/brigadecore/brigade-bitbucket-gateway
+maintainers:
+- name: The Brigade Maintainers
+  email: cncf-brigade-maintainers@lists.cncf.io
