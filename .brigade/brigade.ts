@@ -98,7 +98,7 @@ async function runSuite(event: Event): Promise<void> {
     ),
     buildJob(event)
   ).run()
-  if (event.worker?.git?.ref == "master") {
+  if (event.worker?.git?.ref == "v2") {
     // Push "edge" images.
     //
     // npm packages MUST be semantically versioned, so we DON'T publish an
