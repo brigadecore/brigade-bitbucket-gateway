@@ -1,6 +1,12 @@
-_cache/
-brigade-bitbucket-gateway/rootfs/brigade-bitbucket-gateway
-bin/
-node_modules/
-tests/testdata/*-generated.*
-vendor/
+.gocache/
+coverage.txt
+charts/brigade-bitbucket-gateway/charts
+.DS_Store
+.brigade/node_modules/
+.brigade/secrets.yaml
+
+# IDEs
+.vscode/
+.devcontainer/
+.idea/
+.swp
