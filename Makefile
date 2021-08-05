@@ -141,8 +141,8 @@ push:
 		kaniko \
 			--build-arg VERSION="$(VERSION)" \
 			--build-arg COMMIT="$(GIT_VERSION)" \
-			--dockerfile /workspaces/bitbucket-gateway/Dockerfile \
-			--context dir:///workspaces/bitbucket-gateway/ \
+			--dockerfile /workspaces/brigade-bitbucket-gateway/Dockerfile \
+			--context dir:///workspaces/brigade-bitbucket-gateway/ \
 			--destination $(DOCKER_IMAGE_NAME):$(IMMUTABLE_DOCKER_TAG) \
 			--destination $(DOCKER_IMAGE_NAME):$(MUTABLE_DOCKER_TAG) \
 	'
