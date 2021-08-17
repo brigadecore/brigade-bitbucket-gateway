@@ -167,8 +167,8 @@ emitted into Brigade's event bus. You can subscribe to all event types emitted
 by the gateway, or just specific ones.
 
 In the example project definition below, we subscribe to all events emitted by
-the gateway, provided they've originated from the
-`brigadecore/brigade-bitbucket-gateway` repository (see the `repo` qualifier).
+the gateway, provided they've originated from the fictitious
+`example-org/example` repository (see the `repo` qualifier).
 
 ```yaml
 apiVersion: brigade.sh/v2-beta
@@ -182,14 +182,14 @@ spec:
     types:
     - *
     qualifiers:
-      repo: brigadecore/brigade-bitbucket-gateway
+      repo: example-org/example
   workerTemplate:
     defaultConfigFiles:
       brigade.js: |-
         const { events } = require("@brigadecore/brigadier");
 
         events.on("brigade.sh/bitbucket", "issue:comment_created", () => {
-          console.log("Someone created a new issue in the brigadecore/brigade-bitbucket-gateway repository!");
+          console.log("Someone created a new issue in the example-org/example repository!");
         });
 
         events.process();
@@ -210,14 +210,14 @@ spec:
     types:
     - issue:comment_created
     qualifiers:
-      repo: brigadecore/brigade-bitbucket-gateway
+      repo: example-org/example
   workerTemplate:
     defaultConfigFiles:
       brigade.js: |-
         const { events } = require("@brigadecore/brigadier");
 
         events.on("brigade.sh/bitbucket", "issue:comment_created", () => {
-          console.log("Someone created a new issue in the brigadecore/brigade-bitbucket-gateway repository!");
+          console.log("Someone created a new issue in the example-org/example repository!");
         });
 
         events.process();

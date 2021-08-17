@@ -12,7 +12,7 @@ spec:
     - pullrequest:created
     - pullrequest:updated
     labels:
-      repo: brigadecore/test-repo
+      repo: example-org/example
   workerTemplate:
     defaultConfigFiles:
       brigade.js: |-
