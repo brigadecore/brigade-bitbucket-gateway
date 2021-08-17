@@ -47,9 +47,9 @@ spec:
         {{ if .Values.brigade.emittedEvents }}
         - name: EMITTED_EVENTS
           value: {{ join "," .Values.brigade.emittedEvents | quote }}
+        {{ end }}
         - name: ALLOWED_CLIENT_IPS
           value: {{ join "," .Values.allowedClientIPs | quote }}
-        {{ end }}
         {{- if .Values.tls.enabled }}
         volumeMounts:
         - name: cert
