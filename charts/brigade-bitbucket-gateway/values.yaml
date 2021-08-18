@@ -130,7 +130,6 @@ brigade:
   ## this gateway, with proper permissions:
   ##
   ## $ brig service-account create --id brigade-bitbucket-gateway --description brigade-bitbucket-gateway
-  ## $ brig role grant READER --service-account brigade-bitbucket-gateway
   ## $ brig role grant EVENT_CREATOR --service-account brigade-bitbucket-gateway --source brigade.sh/bitbucket
   apiToken:
   ## Whether to ignore cert warning from the API server
