@@ -46,7 +46,7 @@ func TestAPIClientConfig(t *testing.T) {
 		{
 			name: "API_TOKEN not set",
 			setup: func() {
-				os.Setenv("API_ADDRESS", "foo")
+				t.Setenv("API_ADDRESS", "foo")
 			},
 			assertions: func(
 				_ string,
@@ -62,8 +62,8 @@ func TestAPIClientConfig(t *testing.T) {
 		{
 			name: "success",
 			setup: func() {
-				os.Setenv("API_TOKEN", "bar")
-				os.Setenv("API_IGNORE_CERT_WARNINGS", "true")
+				t.Setenv("API_TOKEN", "bar")
+				t.Setenv("API_IGNORE_CERT_WARNINGS", "true")
 			},
 			assertions: func(
 				address string,
@@ -111,7 +111,7 @@ func TestWebHookServiceConfig(t *testing.T) {
 		{
 			name: "EMITTED_EVENTS defined",
 			setup: func() {
-				os.Setenv("EMITTED_EVENTS", "foo,bar")
+				t.Setenv("EMITTED_EVENTS", "foo,bar")
 			},
 			assertions: func(config webhooks.ServiceConfig) {
 				require.Equal(
@@ -154,7 +154,7 @@ func TestIPFilterConfig(t *testing.T) {
 		{
 			name: "ALLOWED_CLIENT_IPS defined",
 			setup: func() {
-				os.Setenv("ALLOWED_CLIENT_IPS", "192.168.1.0/24,0.0.0.0/0")
+				t.Setenv("ALLOWED_CLIENT_IPS", "192.168.1.0/24,0.0.0.0/0")
 			},
 			assertions: func(config http.IPFilterConfig, err error) {
 				require.NoError(t, err)
@@ -183,7 +183,7 @@ func TestServerConfig(t *testing.T) {
 		{
 			name: "PORT not an int",
 			setup: func() {
-				os.Setenv("PORT", "foo")
+				t.Setenv("PORT", "foo")
 			},
 			assertions: func(_ http.ServerConfig, err error) {
 				require.Error(t, err)
@@ -194,8 +194,8 @@ func TestServerConfig(t *testing.T) {
 		{
 			name: "TLS_ENABLED not a bool",
 			setup: func() {
-				os.Setenv("PORT", "8080")
-				os.Setenv("TLS_ENABLED", "nope")
+				t.Setenv("PORT", "8080")
+				t.Setenv("TLS_ENABLED", "nope")
 			},
 			assertions: func(_ http.ServerConfig, err error) {
 				require.Error(t, err)
@@ -206,7 +206,7 @@ func TestServerConfig(t *testing.T) {
 		{
 			name: "TLS_CERT_PATH required but not set",
 			setup: func() {
-				os.Setenv("TLS_ENABLED", "true")
+				t.Setenv("TLS_ENABLED", "true")
 			},
 			assertions: func(_ http.ServerConfig, err error) {
 				require.Error(t, err)
@@ -217,7 +217,7 @@ func TestServerConfig(t *testing.T) {
 		{
 			name: "TLS_KEY_PATH required but not set",
 			setup: func() {
-				os.Setenv("TLS_CERT_PATH", "/var/ssl/cert")
+				t.Setenv("TLS_CERT_PATH", "/var/ssl/cert")
 			},
 			assertions: func(_ http.ServerConfig, err error) {
 				require.Error(t, err)
@@ -228,7 +228,7 @@ func TestServerConfig(t *testing.T) {
 		{
 			name: "success",
 			setup: func() {
-				os.Setenv("TLS_KEY_PATH", "/var/ssl/key")
+				t.Setenv("TLS_KEY_PATH", "/var/ssl/key")
 			},
 			assertions: func(config http.ServerConfig, err error) {
 				require.NoError(t, err)
