@@ -1,5 +1,7 @@
 # Brigade Bitbucket Gateway
 
+[![codecov](https://codecov.io/gh/brigadecore/brigade-bitbucket-gateway/branch/v2/graph/badge.svg?token=RJyZsepTmV)](https://codecov.io/gh/brigadecore/brigade-bitbucket-gateway)
+
 This is a work-in-progress
 [Brigade 2](https://github.com/brigadecore/brigade/tree/v2)
 compatible gateway that receives events 
