@@ -1,6 +1,7 @@
 # Brigade Bitbucket Gateway
 
 [![codecov](https://codecov.io/gh/brigadecore/brigade-bitbucket-gateway/branch/v2/graph/badge.svg?token=RJyZsepTmV)](https://codecov.io/gh/brigadecore/brigade-bitbucket-gateway)
+[![Go Report Card](https://goreportcard.com/badge/github.com/brigadecore/brigade-bitbucket-gateway)](https://goreportcard.com/report/github.com/brigadecore/brigade-bitbucket-gateway)
 
 This is a work-in-progress
 [Brigade 2](https://github.com/brigadecore/brigade/tree/v2)
