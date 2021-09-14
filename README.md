@@ -84,7 +84,7 @@ a file you can modify:
 
 ```console
 $ helm inspect values oci://ghcr.io/brigadecore/brigade-bitbucket-gateway \
-  --version v2.0.0-alpha.3 > ~/brigade-bitbucket-gateway-values.yaml
+    --version v2.0.0-alpha.3 > ~/brigade-bitbucket-gateway-values.yaml
 ```
 
 Edit `~/brigade-bitbucket-gateway-values.yaml`, making the following changes:
@@ -116,8 +116,8 @@ this command should help you find the gateway's public IP address:
 
 ```console
 $ kubectl get svc brigade-bitbucket-gateway \
-  --namespace brigade-bitbucket-gateway \
-  --output jsonpath='{.status.loadBalancer.ingress[0].ip}'
+    --namespace brigade-bitbucket-gateway \
+    --output jsonpath='{.status.loadBalancer.ingress[0].ip}'
 ```
 
 If you overrode defaults and enabled support for an ingress controller, you
