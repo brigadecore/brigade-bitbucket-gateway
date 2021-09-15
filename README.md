@@ -1,5 +1,6 @@
 # Brigade Bitbucket Gateway
 
+![build](https://badgr.brigade2.io/v1/github/checks/brigadecore/brigade-bitbucket-gateway/badge.svg?branch=v2&appID=99005)
 [![codecov](https://codecov.io/gh/brigadecore/brigade-bitbucket-gateway/branch/v2/graph/badge.svg?token=RJyZsepTmV)](https://codecov.io/gh/brigadecore/brigade-bitbucket-gateway)
 [![Go Report Card](https://goreportcard.com/badge/github.com/brigadecore/brigade-bitbucket-gateway)](https://goreportcard.com/report/github.com/brigadecore/brigade-bitbucket-gateway)
 
