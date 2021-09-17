@@ -4,11 +4,15 @@
 [![codecov](https://codecov.io/gh/brigadecore/brigade-bitbucket-gateway/branch/v2/graph/badge.svg?token=RJyZsepTmV)](https://codecov.io/gh/brigadecore/brigade-bitbucket-gateway)
 [![Go Report Card](https://goreportcard.com/badge/github.com/brigadecore/brigade-bitbucket-gateway)](https://goreportcard.com/report/github.com/brigadecore/brigade-bitbucket-gateway)
 
+<img width="100" align="left" src="logo.png">
+
 This is a work-in-progress
 [Brigade 2](https://github.com/brigadecore/brigade/tree/v2)
 compatible gateway that receives events 
 ([webhooks](https://confluence.atlassian.com/bitbucket/manage-webhooks-735643732.html))
 from Bitbucket and propagates them into Brigade 2's event bus.
+
+<br clear="left"/>
 
 ## Installation
 
