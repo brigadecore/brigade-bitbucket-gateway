@@ -52,9 +52,7 @@ func main() {
 		router.StrictSlash(true)
 		router.Handle(
 			"/events",
-			http.HandlerFunc( // Make a handler from a function
-				ipFilter.Decorate(webhooksHandler.ServeHTTP),
-			),
+			ipFilter.Decorate(webhooksHandler.ServeHTTP),
 		).Methods(http.MethodPost)
 		router.HandleFunc("/healthz", libHTTP.Healthz).Methods(http.MethodGet)
 		serverConfig, err := serverConfig()
