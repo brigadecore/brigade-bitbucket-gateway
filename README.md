@@ -103,6 +103,10 @@ Edit `~/brigade-bitbucket-gateway-values.yaml`, making the following changes:
 
 * `brigade.apiToken`: Service account token from step 2
 
+* `service.type`: If you plan to enable ingress (advanced), you can leave this
+  as its default -- `ClusterIP`. If you do not plan to enable ingress, you
+  probably will want to change this value to `LoadBalancer`.
+
 Save your changes to `~/brigade-bitbucket-gateway-values.yaml` and use the
 following command to install the gateway using the above customizations:
 
@@ -112,13 +116,15 @@ $ helm install brigade-bitbucket-gateway \
     --version v2.0.0-alpha.3 \
     --create-namespace \
     --namespace brigade-bitbucket-gateway \
-    --values ~/brigade-bitbucket-gateway-values.yaml
+    --values ~/brigade-bitbucket-gateway-values.yaml \
+    --wait \
+    --timeout 300s
 ```
 
 ### 3. (RECOMMENDED) Create a DNS Entry
 
-If you installed the gateway without enabling support for an ingress controller,
-this command should help you find the gateway's public IP address:
+If you overrode defaults and set `service.type` to `LoadBalancer`, use this
+command to find the gateway's public IP address:
 
 ```console
 $ kubectl get svc brigade-bitbucket-gateway \
