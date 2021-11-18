@@ -192,7 +192,7 @@ the gateway, provided they've originated from the fictitious
 `example-org/example` repository (see the `repo` qualifier).
 
 ```yaml
-apiVersion: brigade.sh/v2-beta
+apiVersion: brigade.sh/v2
 kind: Project
 metadata:
   id: bitbucket-demo
@@ -220,7 +220,7 @@ In the alternative example below, we subscribe _only_ to `issue:comment_created`
 events:
 
 ```yaml
-apiVersion: brigade.sh/v2-beta
+apiVersion: brigade.sh/v2
 kind: Project
 metadata:
   id: bitbucket-demo
