@@ -90,7 +90,7 @@ a file you can modify:
 
 ```console
 $ helm inspect values oci://ghcr.io/brigadecore/brigade-bitbucket-gateway \
-    --version v2.0.0-alpha.3 > ~/brigade-bitbucket-gateway-values.yaml
+    --version v2.0.0-beta.1 > ~/brigade-bitbucket-gateway-values.yaml
 ```
 
 Edit `~/brigade-bitbucket-gateway-values.yaml`, making the following changes:
@@ -113,7 +113,7 @@ following command to install the gateway using the above customizations:
 ```console
 $ helm install brigade-bitbucket-gateway \
     oci://ghcr.io/brigadecore/brigade-bitbucket-gateway \
-    --version v2.0.0-alpha.3 \
+    --version v2.0.0-beta.1 \
     --create-namespace \
     --namespace brigade-bitbucket-gateway \
     --values ~/brigade-bitbucket-gateway-values.yaml \
