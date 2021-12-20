@@ -93,7 +93,7 @@ class PushImageJob extends BuildImageJob {
 
 // A map of all jobs. When a check_run:rerequested event wants to re-run a
 // single job, this allows us to easily find that job by name.
-const jobs: {[key: string]: (event: Event, version?: string) => Job } = {}
+const jobs: {[key: string]: (event: Event) => Job } = {}
 
 // Basic tests:
 
@@ -134,18 +134,17 @@ jobs[pushJobName] = pushJob
 const publishChartJobName = "publish-chart"
 const publishChartJob = (event: Event, version: string) => {
   return new MakeTargetJob([publishChartJobName], helmImg, event, {
-    "VERSION": version,
     "HELM_REGISTRY": event.project.secrets.helmRegistry || "ghcr.io",
     "HELM_ORG": event.project.secrets.helmOrg,
     "HELM_USERNAME": event.project.secrets.helmUsername,
-    "HELM_PASSWORD": event.project.secrets.helmPassword
+    "HELM_PASSWORD": event.project.secrets.helmPassword,
+    "VERSION": version
   })
 }
-jobs[publishChartJobName] = publishChartJob
 
 // Run the entire suite of tests WITHOUT publishing anything initially. If
-// EVERYTHING passes AND this was a push (merge, presumably) to the master
-// branch, then publish an "edge" image.
+// EVERYTHING passes AND this was a push (merge, presumably) to the main branch,
+// then publish an "edge" image.
 async function runSuite(event: Event): Promise<void> {
   await new SerialGroup(
     new ConcurrentGroup( // Basic tests
@@ -156,13 +155,7 @@ async function runSuite(event: Event): Promise<void> {
     buildJob(event)
   ).run()
   if (event.worker?.git?.ref == "v2") {
-    // Push "edge" images.
-    //
-    // npm packages MUST be semantically versioned, so we DON'T publish an
-    // edge brigadier package.
-    //
-    // To keep our github released page tidy, we're also not publishing "edge"
-    // CLI binaries.
+    // Push "edge" image
     await pushJob(event).run()
   }
 }
