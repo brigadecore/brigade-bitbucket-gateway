@@ -6,7 +6,7 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/brigadecore/brigade/sdk/v2/core"
+	"github.com/brigadecore/brigade/sdk/v3"
 	"github.com/go-playground/webhooks/v6/bitbucket"
 	"github.com/pkg/errors"
 )
@@ -32,18 +32,18 @@ type Service interface {
 	Handle(
 		ctx context.Context,
 		payload interface{},
-	) (core.EventList, error)
+	) (sdk.EventList, error)
 }
 
 type service struct {
-	eventsClient core.EventsClient
+	eventsClient sdk.EventsClient
 	config       ServiceConfig
 }
 
 // NewService returns an implementation of the Service interface for handling
 // webhooks (events) from Bitbucket.
 func NewService(
-	eventsClient core.EventsClient,
+	eventsClient sdk.EventsClient,
 	config ServiceConfig,
 ) Service {
 	return &service{
@@ -56,14 +56,14 @@ func NewService(
 func (s *service) Handle(
 	ctx context.Context,
 	payload interface{},
-) (core.EventList, error) {
-	var events core.EventList
+) (sdk.EventList, error) {
+	var events sdk.EventList
 
 	payloadBytes, err := json.Marshal(payload)
 	if err != nil {
 		return events, errors.Wrap(err, "error marshaling event payload")
 	}
-	event := core.Event{
+	event := sdk.Event{
 		Source:  "brigade.sh/bitbucket",
 		Payload: string(payloadBytes),
 	}
@@ -113,7 +113,7 @@ func (s *service) Handle(
 		event.Qualifiers = map[string]string{
 			"repo": p.Repository.FullName,
 		}
-		event.Git = &core.GitDetails{
+		event.Git = &sdk.GitDetails{
 			Commit: p.PullRequest.Source.Commit.Hash,
 			Ref:    p.PullRequest.Source.Branch.Name,
 		}
@@ -128,7 +128,7 @@ func (s *service) Handle(
 		event.Qualifiers = map[string]string{
 			"repo": p.Repository.FullName,
 		}
-		event.Git = &core.GitDetails{
+		event.Git = &sdk.GitDetails{
 			Commit: p.PullRequest.Source.Commit.Hash,
 			Ref:    p.PullRequest.Source.Branch.Name,
 		}
@@ -143,7 +143,7 @@ func (s *service) Handle(
 		event.Qualifiers = map[string]string{
 			"repo": p.Repository.FullName,
 		}
-		event.Git = &core.GitDetails{
+		event.Git = &sdk.GitDetails{
 			Commit: p.PullRequest.Source.Commit.Hash,
 			Ref:    p.PullRequest.Source.Branch.Name,
 		}
@@ -158,7 +158,7 @@ func (s *service) Handle(
 		event.Qualifiers = map[string]string{
 			"repo": p.Repository.FullName,
 		}
-		event.Git = &core.GitDetails{
+		event.Git = &sdk.GitDetails{
 			Commit: p.PullRequest.Source.Commit.Hash,
 			Ref:    p.PullRequest.Source.Branch.Name,
 		}
@@ -173,7 +173,7 @@ func (s *service) Handle(
 		event.Qualifiers = map[string]string{
 			"repo": p.Repository.FullName,
 		}
-		event.Git = &core.GitDetails{
+		event.Git = &sdk.GitDetails{
 			Commit: p.PullRequest.Source.Commit.Hash,
 			Ref:    p.PullRequest.Source.Branch.Name,
 		}
@@ -188,7 +188,7 @@ func (s *service) Handle(
 		event.Qualifiers = map[string]string{
 			"repo": p.Repository.FullName,
 		}
-		event.Git = &core.GitDetails{
+		event.Git = &sdk.GitDetails{
 			Commit: p.PullRequest.Source.Commit.Hash,
 			Ref:    p.PullRequest.Source.Branch.Name,
 		}
@@ -203,7 +203,7 @@ func (s *service) Handle(
 		event.Qualifiers = map[string]string{
 			"repo": p.Repository.FullName,
 		}
-		event.Git = &core.GitDetails{
+		event.Git = &sdk.GitDetails{
 			Commit: p.PullRequest.Source.Commit.Hash,
 			Ref:    p.PullRequest.Source.Branch.Name,
 		}
@@ -218,7 +218,7 @@ func (s *service) Handle(
 		event.Qualifiers = map[string]string{
 			"repo": p.Repository.FullName,
 		}
-		event.Git = &core.GitDetails{
+		event.Git = &sdk.GitDetails{
 			Commit: p.PullRequest.Source.Commit.Hash,
 			Ref:    p.PullRequest.Source.Branch.Name,
 		}
@@ -233,7 +233,7 @@ func (s *service) Handle(
 		event.Qualifiers = map[string]string{
 			"repo": p.Repository.FullName,
 		}
-		event.Git = &core.GitDetails{
+		event.Git = &sdk.GitDetails{
 			Commit: p.PullRequest.Source.Commit.Hash,
 			Ref:    p.PullRequest.Source.Branch.Name,
 		}
@@ -248,7 +248,7 @@ func (s *service) Handle(
 		event.Qualifiers = map[string]string{
 			"repo": p.Repository.FullName,
 		}
-		event.Git = &core.GitDetails{
+		event.Git = &sdk.GitDetails{
 			Commit: p.Commit.Hash,
 		}
 
@@ -265,7 +265,7 @@ func (s *service) Handle(
 		}
 		url := fmt.Sprintf("%v", p.CommitStatus.Links.Commit)
 		urls := strings.Split(url, "/")
-		event.Git = &core.GitDetails{
+		event.Git = &sdk.GitDetails{
 			Commit: urls[len(urls)-1],
 		}
 
@@ -282,7 +282,7 @@ func (s *service) Handle(
 		}
 		url := fmt.Sprintf("%v", p.CommitStatus.Links.Commit)
 		urls := strings.Split(url, "/")
-		event.Git = &core.GitDetails{
+		event.Git = &sdk.GitDetails{
 			Commit: urls[len(urls)-1],
 		}
 
@@ -307,7 +307,7 @@ func (s *service) Handle(
 		event.Qualifiers = map[string]string{
 			"repo": p.Repository.FullName,
 		}
-		event.Git = &core.GitDetails{
+		event.Git = &sdk.GitDetails{
 			Commit: p.Push.Changes[0].New.Target.Hash,
 			Ref:    p.Push.Changes[0].New.Name,
 		}
@@ -330,7 +330,7 @@ func (s *service) Handle(
 
 	if s.shouldEmit(event.Type) {
 		var err error
-		events, err = s.eventsClient.Create(ctx, event)
+		events, err = s.eventsClient.Create(ctx, event, nil)
 		if err != nil {
 			return events, errors.Wrap(err, "error emitting event(s) into Brigade")
 		}

@@ -8,7 +8,7 @@ import (
 	libHTTP "github.com/brigadecore/brigade-foundations/http"
 	"github.com/brigadecore/brigade-foundations/signals"
 	"github.com/brigadecore/brigade-foundations/version"
-	"github.com/brigadecore/brigade/sdk/v2/core"
+	"github.com/brigadecore/brigade/sdk/v3"
 	"github.com/gorilla/mux"
 )
 
@@ -27,7 +27,7 @@ func main() {
 			log.Fatal(err)
 		}
 		webhooksService = webhooks.NewService(
-			core.NewEventsClient(address, token, &opts),
+			sdk.NewEventsClient(address, token, &opts),
 			webhookServiceConfig(),
 		)
 	}

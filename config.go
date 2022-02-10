@@ -7,7 +7,7 @@ import (
 	"github.com/brigadecore/brigade-bitbucket-gateway/internal/webhooks"
 	"github.com/brigadecore/brigade-foundations/http"
 	"github.com/brigadecore/brigade-foundations/os"
-	"github.com/brigadecore/brigade/sdk/v2/restmachinery"
+	"github.com/brigadecore/brigade/sdk/v3/restmachinery"
 )
 
 // apiClientConfig populates the Brigade SDK's APIClientOptions from
