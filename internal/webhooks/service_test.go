@@ -3,7 +3,7 @@ package webhooks
 import (
 	"testing"
 
-	coreTesting "github.com/brigadecore/brigade/sdk/v2/testing/core"
+	sdkTesting "github.com/brigadecore/brigade/sdk/v3/testing"
 	"github.com/stretchr/testify/require"
 )
 
@@ -11,8 +11,8 @@ func TestNewService(t *testing.T) {
 	s, ok := NewService(
 		// Totally unusable client that is enough to fulfill the dependencies for
 		// this test...
-		&coreTesting.MockEventsClient{
-			LogsClient: &coreTesting.MockLogsClient{},
+		&sdkTesting.MockEventsClient{
+			LogsClient: &sdkTesting.MockLogsClient{},
 		},
 		ServiceConfig{},
 	).(*service)
