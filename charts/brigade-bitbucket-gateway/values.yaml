@@ -44,9 +44,11 @@ tls:
   # key: base 64 encoded key goes here
 
 ingress:
-  ## Whether to enable ingress. By default, this is disabled and the gateway's
-  ## service is of type LoadBalancer instead. Enabling ingress is advanced
-  ## usage.
+  ## Whether to enable ingress. By default, this is disabled. Enabling ingress
+  ## is advanced usage.
+  ##
+  ## Note: This gateway requires access to the client's IP address, so only
+  ## ingress controllers that that set the X-FORWARDED-FOR header are supported.
   enabled: false
   ## Optionally use annotations specified by your ingress controller's
   ## documentation to customize the behavior of the ingress resource.
