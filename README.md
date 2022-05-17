@@ -100,7 +100,7 @@ spec:
   eventSubscriptions:
   - source: brigade.sh/bitbucket
     types:
-    - issue:created
+    - repo:push
     qualifiers:
       repo: example-org/example
   workerTemplate:
@@ -108,8 +108,8 @@ spec:
       brigade.js: |-
         const { events } = require("@brigadecore/brigadier");
 
-        events.on("brigade.sh/bitbucket", "issue:created", () => {
-          console.log("Someone created a new issue in the example-org/example repository!");
+        events.on("brigade.sh/bitbucket", "repo:push", () => {
+          console.log("Someone pushed a commit to the example-org/example repository!");
         });
 
         events.process();

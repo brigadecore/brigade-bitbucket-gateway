@@ -8,42 +8,16 @@ spec:
   eventSubscriptions:
   - source: brigade.sh/bitbucket
     types:
-    - repo:forked
-    - pullrequest:created
-    - pullrequest:updated
-    labels:
+    - repo:push
+    qualifiers:
       repo: example-org/example
   workerTemplate:
     defaultConfigFiles:
       brigade.js: |-
-        const { events, Job } = require("@brigadecore/brigadier");
+        const { events } = require("@brigadecore/brigadier");
 
-        async function runPipeline(event) {
-          let fooJob = new Job("foo", "debian:latest", event);
-          fooJob.primaryContainer.command = ["echo"];
-          fooJob.primaryContainer.arguments = ["foo"];
-          await fooJob.run();
-
-          let barJob = new Job("bar", "debian:latest", event);
-          barJob.primaryContainer.command = ["echo"];
-          barJob.primaryContainer.arguments = ["bar"];
-          await barJob.run();
-        }
-
-        events.on("brigade.sh/bitbucket", "repo:forked", () => {
-          console.log("----> received repo:forked event");
-        });
-
-        events.on("brigade.sh/bitbucket", "pullrequest:created", async event => {
-          console.log("----> received pullrequest:created event");
-          await runPipeline(event);
-        });
-
-        events.on("brigade.sh/bitbucket", "pullrequest:updated", async event => {
-          console.log("----> received pullrequest:updated event");
-          await runPipeline(event);
+        events.on("brigade.sh/bitbucket", "repo:push", () => {
+          console.log("Someone pushed a commit to the example-org/example repository!");
         });
 
         events.process();
-    logLevel: DEBUG
-    useWorkspace: false
