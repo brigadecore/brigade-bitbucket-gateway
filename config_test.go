@@ -2,12 +2,9 @@ package main
 
 // nolint: lll
 import (
-	"io/ioutil"
 	"net"
-	"os"
 	"testing"
 
-	"github.com/brigadecore/brigade-bitbucket-gateway/internal/webhooks"
 	"github.com/brigadecore/brigade-foundations/http"
 	"github.com/brigadecore/brigade/sdk/v3/restmachinery"
 	"github.com/stretchr/testify/require"
@@ -83,51 +80,6 @@ func TestAPIClientConfig(t *testing.T) {
 			testCase.setup()
 			address, token, opts, err := apiClientConfig()
 			testCase.assertions(address, token, opts, err)
-		})
-	}
-}
-
-func TestWebHookServiceConfig(t *testing.T) {
-	tmpFile, err := ioutil.TempFile(os.TempDir(), "")
-	require.NoError(t, err)
-	defer os.Remove(tmpFile.Name())
-	_, err = tmpFile.Write([]byte("foo"))
-	require.NoError(t, err)
-	testCases := []struct {
-		name       string
-		setup      func()
-		assertions func(webhooks.ServiceConfig)
-	}{
-		{
-			name: "EMITTED_EVENTS not defined",
-			assertions: func(config webhooks.ServiceConfig) {
-				require.Equal(
-					t,
-					[]string{"*"},
-					config.EmittedEvents,
-				)
-			},
-		},
-		{
-			name: "EMITTED_EVENTS defined",
-			setup: func() {
-				t.Setenv("EMITTED_EVENTS", "foo,bar")
-			},
-			assertions: func(config webhooks.ServiceConfig) {
-				require.Equal(
-					t,
-					[]string{"foo", "bar"},
-					config.EmittedEvents,
-				)
-			},
-		},
-	}
-	for _, testCase := range testCases {
-		t.Run(testCase.name, func(t *testing.T) {
-			if testCase.setup != nil {
-				testCase.setup()
-			}
-			testCase.assertions(webhookServiceConfig())
 		})
 	}
 }
