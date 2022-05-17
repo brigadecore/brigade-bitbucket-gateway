@@ -14,9 +14,7 @@ func TestNewService(t *testing.T) {
 		&sdkTesting.MockEventsClient{
 			LogsClient: &sdkTesting.MockLogsClient{},
 		},
-		ServiceConfig{},
 	).(*service)
 	require.True(t, ok)
 	require.NotNil(t, s.eventsClient)
-	require.NotNil(t, s.config)
 }

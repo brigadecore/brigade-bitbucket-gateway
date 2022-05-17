@@ -28,7 +28,6 @@ func main() {
 		}
 		webhooksService = webhooks.NewService(
 			sdk.NewEventsClient(address, token, &opts),
-			webhookServiceConfig(),
 		)
 	}
 
