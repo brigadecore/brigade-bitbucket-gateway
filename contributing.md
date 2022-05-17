@@ -88,8 +88,8 @@ of this:
    the applicable ngrok URL will be displayed in the gateway's logs in the Tilt
    UI.
 
-1. Using the ngrok URL from the previous step, complete the usual usage
-   instructions from `README.md`, beginning with this
+1. Using the URL `<ngrok URL>/events`, complete the usual usage instructions
+   from `README.md`, beginning with this
    [this section](./README.md#4-create-webhooks).
 
 > ⚠️&nbsp;&nbsp;We cannot guarantee that ngrok will work in all environments,
