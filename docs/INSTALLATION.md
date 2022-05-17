@@ -55,13 +55,13 @@
 
 ## Install the Gateway
 
-> ⚠️&nbsp;&nbsp;be sure you are using
+> ⚠️&nbsp;&nbsp;Be sure you are using
 > [Helm 3.7.0](https://github.com/helm/helm/releases/tag/v3.7.0) or greater and
 > enable experimental OCI support:
 >
-> ```console
->  $ export HELM_EXPERIMENTAL_OCI=1
->  ```
+> ```shell
+> $ export HELM_EXPERIMENTAL_OCI=1
+> ```
 
 1. As this gateway requires some specific configuration to function properly,
    we'll first create a values file containing those settings. Use the following
@@ -116,7 +116,7 @@
 If you overrode defaults and set `service.type` to `LoadBalancer`, use this
 command to find the gateway's public IP address:
 
-```console
+```shell
 $ kubectl get svc brigade-bitbucket-gateway \
     --namespace brigade-bitbucket-gateway \
     --output jsonpath='{.status.loadBalancer.ingress[0].ip}'

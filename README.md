@@ -118,7 +118,7 @@ spec:
 Assuming this file were named `project.yaml`, you can create the project like
 so:
 
-```console
+```shell
 $ brig project create --file project.yaml
 ```
 
@@ -131,7 +131,7 @@ definition.
 
 List the events for the `bitbucket-demo` project to confirm this:
 
-```console
+```shell
 $ brig event list --project bitbucket-demo
 ```
 

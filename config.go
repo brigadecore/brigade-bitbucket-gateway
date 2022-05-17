@@ -4,7 +4,6 @@ package main
 import (
 	"net"
 
-	"github.com/brigadecore/brigade-bitbucket-gateway/internal/webhooks"
 	"github.com/brigadecore/brigade-foundations/http"
 	"github.com/brigadecore/brigade-foundations/os"
 	"github.com/brigadecore/brigade/sdk/v3/restmachinery"
@@ -25,17 +24,6 @@ func apiClientConfig() (string, string, restmachinery.APIClientOptions, error) {
 	opts.AllowInsecureConnections, err =
 		os.GetBoolFromEnvVar("API_IGNORE_CERT_WARNINGS", false)
 	return address, token, opts, err
-}
-
-// webhookServiceConfig populates configuration for the webhook-handling service
-// from environment variables.
-func webhookServiceConfig() webhooks.ServiceConfig {
-	return webhooks.ServiceConfig{
-		EmittedEvents: os.GetStringSliceFromEnvVar(
-			"EMITTED_EVENTS",
-			[]string{"*"},
-		),
-	}
 }
 
 // ipFilterConfig populates configuration for the IP web request filter.
