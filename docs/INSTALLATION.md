@@ -70,7 +70,7 @@
 
    ```shell
    $ helm inspect values oci://ghcr.io/brigadecore/brigade-bitbucket-gateway \
-    --version v2.0.0-beta.3 > ~/brigade-bitbucket-gateway-values.yaml
+    --version v2.0.0 > ~/brigade-bitbucket-gateway-values.yaml
    ```
 
 1. Edit `~/brigade-bitbucket-gateway-values.yaml`, making the following changes:
@@ -103,7 +103,7 @@
    ```shell
    $ helm install brigade-bitbucket-gateway \
        oci://ghcr.io/brigadecore/brigade-bitbucket-gateway \
-       --version v2.0.0-beta.3 \
+       --version v2.0.0 \
        --create-namespace \
        --namespace brigade-bitbucket-gateway \
        --values ~/brigade-bitbucket-gateway-values.yaml \
