@@ -144,9 +144,3 @@ brigade:
   apiToken:
   ## Whether to ignore cert warning from the API server
   apiIgnoreCertWarnings: true
-  ## The opt-in list of upstream event types that may be emitted into Brigade.
-  ## Defaults to "*" which matches any event type. To emit only specific events
-  ## into Brigade, remove "*" and enumerate specific event types instead
-  ## (`pullrequest:created`, for instance).
-  emittedEvents:
-  - "*"

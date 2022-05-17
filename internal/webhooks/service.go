@@ -11,20 +11,6 @@ import (
 	"github.com/pkg/errors"
 )
 
-// ServiceConfig encapsulates configuration options for webhook-handling
-// service.
-type ServiceConfig struct {
-	// EmittedEvents enumerates specific event types that, when received by the
-	// gateway, should be emitted into Brigade's event bus. The value "*" can be
-	// used to indicate "all events." ONLY specified events are emitted. i.e. An
-	// empty list in this field will result in NO EVENTS being emitted into
-	// Brigade's event bus. This field is one of several useful controls for
-	// cutting down on the amount of noise that this gateway propagates into
-	// Brigade's event bus. (Another would be to configure the Brigade App itself
-	// to only send specific events to this gateway.)
-	EmittedEvents []string
-}
-
 // Service is an interface for components that can handle webhooks (events) from
 // Bitbucket. Implementations of this interface are transport-agnostic.
 type Service interface {
@@ -37,18 +23,13 @@ type Service interface {
 
 type service struct {
 	eventsClient sdk.EventsClient
-	config       ServiceConfig
 }
 
 // NewService returns an implementation of the Service interface for handling
 // webhooks (events) from Bitbucket.
-func NewService(
-	eventsClient sdk.EventsClient,
-	config ServiceConfig,
-) Service {
+func NewService(eventsClient sdk.EventsClient) Service {
 	return &service{
 		eventsClient: eventsClient,
-		config:       config,
 	}
 }
 
@@ -328,26 +309,6 @@ func (s *service) Handle(
 		return events, nil
 	}
 
-	if s.shouldEmit(event.Type) {
-		var err error
-		events, err = s.eventsClient.Create(ctx, event, nil)
-		if err != nil {
-			return events, errors.Wrap(err, "error emitting event(s) into Brigade")
-		}
-	}
-
-	return events, nil
-}
-
-// shouldEmit makes a determination whether the specified event type is eligible
-// to be emitted into Brigade's event bus.
-func (s *service) shouldEmit(eventType string) bool {
-	unqualifiedEventType := strings.Split(eventType, ":")[0]
-	for _, emitableEvent := range s.config.EmittedEvents {
-		if eventType == emitableEvent || unqualifiedEventType == emitableEvent ||
-			emitableEvent == "*" {
-			return true
-		}
-	}
-	return false
+	events, err = s.eventsClient.Create(ctx, event, nil)
+	return events, errors.Wrap(err, "error emitting event(s) into Brigade")
 }
